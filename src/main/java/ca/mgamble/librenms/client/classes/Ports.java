@@ -30,31 +30,16 @@ import java.util.List;
  *
  * @author mgamble
  */
-public class Devices {
+public class Ports {
+
+    
     private String status;
-    private List<Device> devices;
+    private List<Port> ports;
     
-    public Devices() {
-        this.devices = new ArrayList<>();
-    }
-    public void addDevice(Device device) {
-        if (this.devices == null) {
-            this.devices = new ArrayList<>();
-        }
-        this.devices.add(device);
-    }
     
-    public List<Device> getDevices() {
-        return devices;
+    public Ports() {
+        this.ports = new ArrayList<>();
     }
-
-    /**
-     * @param data the data to set
-     */
-    public void setDevices(List<Device> data) {
-        this.devices = data;
-    }
-
     /**
      * @return the status
      */
@@ -68,4 +53,29 @@ public class Devices {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    /**
+     * @return the ports
+     */
+    public List<Port> getPorts() {
+        return ports;
+    }
+
+    /**
+     * @param ports the ports to set
+     */
+    public void setPorts(List<Port> ports) {
+        this.ports = ports;
+    }
+    
+    /**
+     * @param port the ports to add to the arraylist
+     */
+    public void addPort(Port port) {
+        if (this.ports == null) { 
+            this.ports = new ArrayList<>();
+        }
+        this.ports.add(port);
+    }
+
 }

@@ -23,49 +23,24 @@
  */
 package ca.mgamble.librenms.client.classes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author mgamble
  */
-public class Devices {
-    private String status;
-    private List<Device> devices;
-    
-    public Devices() {
-        this.devices = new ArrayList<>();
-    }
-    public void addDevice(Device device) {
-        if (this.devices == null) {
-            this.devices = new ArrayList<>();
-        }
-        this.devices.add(device);
-    }
-    
-    public List<Device> getDevices() {
-        return devices;
+public class Port {
+    private String ifName;
+
+    /**
+     * @return the ifName
+     */
+    public String getIfName() {
+        return ifName;
     }
 
     /**
-     * @param data the data to set
+     * @param ifName the ifName to set
      */
-    public void setDevices(List<Device> data) {
-        this.devices = data;
-    }
-
-    /**
-     * @return the status
-     */
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(String status) {
-        this.status = status;
+    public void setIfName(String ifName) {
+        this.ifName = ifName;
     }
 }

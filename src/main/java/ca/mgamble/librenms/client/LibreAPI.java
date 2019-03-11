@@ -21,7 +21,10 @@ package ca.mgamble.librenms.client;
 
 import ca.mgamble.librenms.client.classes.Device;
 import ca.mgamble.librenms.client.classes.Devices;
+import ca.mgamble.librenms.client.classes.Ports;
+import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
+import java.io.BufferedInputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -33,6 +36,7 @@ import org.asynchttpclient.DefaultAsyncHttpClient;
 import org.asynchttpclient.Request;
 import org.asynchttpclient.RequestBuilder;
 import org.asynchttpclient.Response;
+
 
 /**
  *
@@ -131,7 +135,6 @@ public class LibreAPI implements Closeable {
         Future<Response> f = client.executeRequest(buildRequest("GET", "/devicegroups/" + URLEncoder.encode(deviceGroup, "UTF-8")));
         Response r = f.get();
         if (r.getStatusCode() != 200) {
-            
             throw new Exception("Could not get group devices - response code is " + r.getStatusCode());
         } else {
             return gson.fromJson(r.getResponseBody(), Devices.class);
@@ -139,6 +142,33 @@ public class LibreAPI implements Closeable {
         }
     }
     
+     
+    // devices/:device/ports - get the device ports
+     
+     public Ports getDevicePorts(String deviceID) throws Exception {
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/ports"));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device ports - response code is " + r.getStatusCode());
+        } else {
+            return gson.fromJson(r.getResponseBody(), Ports.class);
+            
+        }
+     }
+     
+     // Device images - for now we're going to return them as a byte array for now?
+     
+     public byte[] getDevicePortGraph(String deviceID, String ifaceName) throws Exception {
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/ports/" + URLEncoder.encode(ifaceName, "UTF-8") + "/port_bits"));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device port graph - response code is " + r.getStatusCode());
+        } else {
+            BufferedInputStream bis = new BufferedInputStream(r.getResponseBodyAsStream());
+            return ByteStreams.toByteArray(bis);
+        }
+     }
+     
     private Request buildRequest(String type, String subUrl) {
         RequestBuilder builder = new RequestBuilder(type);
         Request request = builder.setUrl(this.url + subUrl)
