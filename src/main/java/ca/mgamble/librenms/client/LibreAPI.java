@@ -21,6 +21,7 @@ package ca.mgamble.librenms.client;
 
 import ca.mgamble.librenms.client.classes.Device;
 import ca.mgamble.librenms.client.classes.Devices;
+import ca.mgamble.librenms.client.classes.EventLogs;
 import ca.mgamble.librenms.client.classes.Ports;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
@@ -71,7 +72,7 @@ public class LibreAPI implements Closeable {
             if (r.getStatusCode() == 401) {
                 throw new Exception("API Client Unauthorized");
             } else {
-                throw new Exception("Could not connect / login to LibreAPI");
+                throw new Exception("Could not connect / login to LibreAPI - http status " + r.getStatusCode());
             }
         } 
         closeClient = true;
@@ -169,6 +170,18 @@ public class LibreAPI implements Closeable {
         }
      }
      
+    // Event Logs
+    public EventLogs getDeviceEventLogs(String deviceID) throws Exception {
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/logs/eventlog/" + URLEncoder.encode(deviceID, "UTF-8")));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device event logs - response code is " + r.getStatusCode());
+        } else {
+            return gson.fromJson(r.getResponseBody(), EventLogs.class);
+
+        }
+    }
+
     private Request buildRequest(String type, String subUrl) {
         RequestBuilder builder = new RequestBuilder(type);
         Request request = builder.setUrl(this.url + subUrl)

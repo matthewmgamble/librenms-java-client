@@ -1,5 +1,8 @@
+/Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/EventLogs.java
+/Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/EventType.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/Port.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/LibreAPI.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/Device.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/Ports.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/Devices.java
+/Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/EventLog.java
