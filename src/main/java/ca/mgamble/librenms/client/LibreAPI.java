@@ -115,6 +115,9 @@ public class LibreAPI implements Closeable {
     }
     
     public Device getDevice(String deviceID) throws Exception {
+        if (deviceID == null) {
+            throw new Exception("Cannot load a null device - check device ID");
+        }
        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8")));
         Response r = f.get();
         if (r.getStatusCode() != 200) {
@@ -147,7 +150,7 @@ public class LibreAPI implements Closeable {
     // devices/:device/ports - get the device ports
      
      public Ports getDevicePorts(String deviceID) throws Exception {
-        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/ports"));
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/ports?columns=ifName%2Cport_id%2CifOperStatus"));
         Response r = f.get();
         if (r.getStatusCode() != 200) {
             throw new Exception("Could not get device ports - response code is " + r.getStatusCode());

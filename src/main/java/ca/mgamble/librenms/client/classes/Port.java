@@ -29,7 +29,9 @@ package ca.mgamble.librenms.client.classes;
  */
 public class Port {
     private String ifName;
-
+    private String port_id;
+    private String ifOperStatus;
+    
     /**
      * @return the ifName
      */
@@ -42,5 +44,33 @@ public class Port {
      */
     public void setIfName(String ifName) {
         this.ifName = ifName;
+    }
+
+    /**
+     * @return the port_id
+     */
+    public String getPort_id() {
+        return port_id;
+    }
+
+    /**
+     * @param port_id the port_id to set
+     */
+    public void setPort_id(String port_id) {
+        this.port_id = port_id;
+    }
+
+    /**
+     * @return the ifOperStatus
+     */
+    public String getIfOperStatus() {
+        return ifOperStatus;
+    }
+
+    /**
+     * @param ifOperStatus the ifOperStatus to set
+     */
+    public void setIfOperStatus(String ifOperStatus) {
+        this.ifOperStatus = ifOperStatus;
     }
 }
