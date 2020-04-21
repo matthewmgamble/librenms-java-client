@@ -27,64 +27,50 @@ package ca.mgamble.librenms.client.classes;
  *
  * @author mgamble
  */
-public class Port {
-    private String ifName;
-    private String port_id;
-    private String ifOperStatus;
-    private String ifDescr;
+public class DevicePortResponse {
+    private String status;
+    private PortDetail port;
+    private int count;
+
     /**
-     * @return the ifName
+     * @return the status
      */
-    public String getIfName() {
-        return ifName;
+    public String getStatus() {
+        return status;
     }
 
     /**
-     * @param ifName the ifName to set
+     * @param status the status to set
      */
-    public void setIfName(String ifName) {
-        this.ifName = ifName;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /**
-     * @return the port_id
+     * @return the port
      */
-    public String getPort_id() {
-        return port_id;
+    public PortDetail getPort() {
+        return port;
     }
 
     /**
-     * @param port_id the port_id to set
+     * @param port the port to set
      */
-    public void setPort_id(String port_id) {
-        this.port_id = port_id;
+    public void setPort(PortDetail port) {
+        this.port = port;
     }
 
     /**
-     * @return the ifOperStatus
+     * @return the count
      */
-    public String getIfOperStatus() {
-        return ifOperStatus;
+    public int getCount() {
+        return count;
     }
 
     /**
-     * @param ifOperStatus the ifOperStatus to set
+     * @param count the count to set
      */
-    public void setIfOperStatus(String ifOperStatus) {
-        this.ifOperStatus = ifOperStatus;
-    }
-
-    /**
-     * @return the ifDescr
-     */
-    public String getIfDescr() {
-        return ifDescr;
-    }
-
-    /**
-     * @param ifDescr the ifDescr to set
-     */
-    public void setIfDescr(String ifDescr) {
-        this.ifDescr = ifDescr;
+    public void setCount(int count) {
+        this.count = count;
     }
 }

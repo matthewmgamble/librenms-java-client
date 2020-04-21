@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2019 mgamble.
+ * Copyright 2020 mgamble.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,68 +23,64 @@
  */
 package ca.mgamble.librenms.client.classes;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author mgamble
  */
-public class Port {
-    private String ifName;
-    private String port_id;
-    private String ifOperStatus;
-    private String ifDescr;
+public class Graphs {
+    
+    private String status;
+    private ArrayList<GraphInfo> graphs;
+    private int count;
+
     /**
-     * @return the ifName
+     * @return the status
      */
-    public String getIfName() {
-        return ifName;
+    public String getStatus() {
+        return status;
     }
 
     /**
-     * @param ifName the ifName to set
+     * @param status the status to set
      */
-    public void setIfName(String ifName) {
-        this.ifName = ifName;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /**
-     * @return the port_id
+     * @return the graphs
      */
-    public String getPort_id() {
-        return port_id;
+    public ArrayList<GraphInfo> getGraphs() {
+        return graphs;
+    }
+
+    public void addGraph(GraphInfo graph) {
+        if (this.graphs == null) {
+            this.graphs = new ArrayList<>();
+        }
+        this.graphs.add(graph);
+    }
+    /**
+     * @param graphs the graphs to set
+     */
+    public void setGraphs(ArrayList<GraphInfo> graphs) {
+        this.graphs = graphs;
     }
 
     /**
-     * @param port_id the port_id to set
+     * @return the count
      */
-    public void setPort_id(String port_id) {
-        this.port_id = port_id;
+    public int getCount() {
+        return count;
     }
 
     /**
-     * @return the ifOperStatus
+     * @param count the count to set
      */
-    public String getIfOperStatus() {
-        return ifOperStatus;
+    public void setCount(int count) {
+        this.count = count;
     }
-
-    /**
-     * @param ifOperStatus the ifOperStatus to set
-     */
-    public void setIfOperStatus(String ifOperStatus) {
-        this.ifOperStatus = ifOperStatus;
-    }
-
-    /**
-     * @return the ifDescr
-     */
-    public String getIfDescr() {
-        return ifDescr;
-    }
-
-    /**
-     * @param ifDescr the ifDescr to set
-     */
-    public void setIfDescr(String ifDescr) {
-        this.ifDescr = ifDescr;
-    }
+    
 }

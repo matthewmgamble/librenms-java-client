@@ -27,64 +27,36 @@ package ca.mgamble.librenms.client.classes;
  *
  * @author mgamble
  */
-public class Port {
-    private String ifName;
-    private String port_id;
-    private String ifOperStatus;
-    private String ifDescr;
+public class LibreOperationResponse {
+    private String status;
+    private String message;
+
     /**
-     * @return the ifName
+     * @return the status
      */
-    public String getIfName() {
-        return ifName;
+    public String getStatus() {
+        return status;
     }
 
     /**
-     * @param ifName the ifName to set
+     * @param status the status to set
      */
-    public void setIfName(String ifName) {
-        this.ifName = ifName;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /**
-     * @return the port_id
+     * @return the message
      */
-    public String getPort_id() {
-        return port_id;
+    public String getMessage() {
+        return message;
     }
 
     /**
-     * @param port_id the port_id to set
+     * @param message the message to set
      */
-    public void setPort_id(String port_id) {
-        this.port_id = port_id;
+    public void setMessage(String message) {
+        this.message = message;
     }
-
-    /**
-     * @return the ifOperStatus
-     */
-    public String getIfOperStatus() {
-        return ifOperStatus;
-    }
-
-    /**
-     * @param ifOperStatus the ifOperStatus to set
-     */
-    public void setIfOperStatus(String ifOperStatus) {
-        this.ifOperStatus = ifOperStatus;
-    }
-
-    /**
-     * @return the ifDescr
-     */
-    public String getIfDescr() {
-        return ifDescr;
-    }
-
-    /**
-     * @param ifDescr the ifDescr to set
-     */
-    public void setIfDescr(String ifDescr) {
-        this.ifDescr = ifDescr;
-    }
+    
 }

@@ -1,7 +1,10 @@
+ca/mgamble/librenms/client/classes/PortDetail.class
 ca/mgamble/librenms/client/classes/EventLogs.class
 ca/mgamble/librenms/client/classes/Device.class
-ca/mgamble/librenms/client/classes/Devices.class
-ca/mgamble/librenms/client/classes/Port.class
 ca/mgamble/librenms/client/classes/EventLog.class
 ca/mgamble/librenms/client/classes/EventType.class
+ca/mgamble/librenms/client/classes/NewLibreDevice.class
+ca/mgamble/librenms/client/classes/DevicePortResponse.class
 ca/mgamble/librenms/client/classes/Ports.class
+ca/mgamble/librenms/client/classes/Devices.class
+ca/mgamble/librenms/client/classes/Port.class

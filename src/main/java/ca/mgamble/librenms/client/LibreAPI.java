@@ -20,8 +20,14 @@ THE SOFTWARE.
 package ca.mgamble.librenms.client;
 
 import ca.mgamble.librenms.client.classes.Device;
+import ca.mgamble.librenms.client.classes.DevicePortResponse;
 import ca.mgamble.librenms.client.classes.Devices;
 import ca.mgamble.librenms.client.classes.EventLogs;
+import ca.mgamble.librenms.client.classes.Graphs;
+import ca.mgamble.librenms.client.classes.IPInfo;
+import ca.mgamble.librenms.client.classes.LibreOperationResponse;
+import ca.mgamble.librenms.client.classes.NewLibreDevice;
+import ca.mgamble.librenms.client.classes.PortDetail;
 import ca.mgamble.librenms.client.classes.Ports;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
@@ -53,14 +59,19 @@ public class LibreAPI implements Closeable {
     private final Logger logger;
     private boolean closed = false;
     Gson gson = new Gson();
-
+    private Version version = new Version();
+    
+    public String getAPIVersion() {
+        return version.getBuildNumber();
+    } 
+    
     public LibreAPI(String url, String token) throws Exception {
         this.logger = Logger.getLogger(LibreAPI.class);
         this.url = url;
         this.token = token;
         this.client = new DefaultAsyncHttpClient();
         
-        RequestBuilder builder = new RequestBuilder("POST");
+        RequestBuilder builder = new RequestBuilder("GET");
         Request request = builder.setUrl(this.url)
                 .addHeader("Accept", JSON)
                 .addHeader("Content-Type", JSON)
@@ -134,6 +145,20 @@ public class LibreAPI implements Closeable {
         }
     }
     
+    public LibreOperationResponse createDevice(NewLibreDevice newDevice) throws Exception {
+    
+       Future<Response> f = client.executeRequest(buildRequest("POST", "/devices", gson.toJson(newDevice)));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            
+            throw new Exception("Could not create new device - HTTP Response Code was: " + r.getStatusCode() );
+        } else {
+          
+                return gson.fromJson(r.getResponseBody(), LibreOperationResponse.class);
+            
+        }
+    }
+    
      // devicegroups/:Device Group
      public Devices getGroupDevices(String deviceGroup) throws Exception {
         Future<Response> f = client.executeRequest(buildRequest("GET", "/devicegroups/" + URLEncoder.encode(deviceGroup, "UTF-8")));
@@ -150,13 +175,70 @@ public class LibreAPI implements Closeable {
     // devices/:device/ports - get the device ports
      
      public Ports getDevicePorts(String deviceID) throws Exception {
-        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/ports?columns=ifName%2Cport_id%2CifOperStatus"));
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/ports?columns=ifName%2Cport_id%2CifOperStatus%2CifDescr"));
         Response r = f.get();
         if (r.getStatusCode() != 200) {
             throw new Exception("Could not get device ports - response code is " + r.getStatusCode());
         } else {
             return gson.fromJson(r.getResponseBody(), Ports.class);
             
+        }
+     }
+     
+     
+     public IPInfo getPortIPInfo(String portID) throws Exception {
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/ports/" + URLEncoder.encode(portID, "UTF-8") + "/ip"));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get ip info for  port - response code is " + r.getStatusCode());
+        } else {
+            return gson.fromJson(r.getResponseBody(), IPInfo.class);
+            
+        }
+     }
+     
+     
+     public PortDetail getDevicePortDetail(String deviceID, String portName) throws Exception {
+         Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" +  URLEncoder.encode(deviceID, "UTF-8") + "/ports/" + URLEncoder.encode(portName, "UTF-8")));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get details for port " + portName + " - response code is " + r.getStatusCode());
+        } else {
+            DevicePortResponse devicePortResponse = gson.fromJson(r.getResponseBody(), DevicePortResponse.class);
+            return devicePortResponse.getPort();
+            
+        }
+     }
+     public PortDetail getPortDetail(int portID) throws Exception {
+      Future<Response> f = client.executeRequest(buildRequest("GET", "/ports/" + URLEncoder.encode(Integer.toString(portID), "UTF-8")));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get details for port " + portID + " - response code is " + r.getStatusCode());
+        } else {
+            return gson.fromJson(r.getResponseBody(), PortDetail.class);
+            
+        }
+     }
+     
+     public Graphs getDeviceGraphs(String deviceID) throws Exception {
+      Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/graphs"));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get avaiabile graphs for device id " + deviceID + " - response code is " + r.getStatusCode());
+        } else {
+            return gson.fromJson(r.getResponseBody(), Graphs.class);
+            
+        }
+     }
+     
+     public byte[] getGenericDeviceGraph(String deviceID, String graphType) throws Exception {
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/" + URLEncoder.encode(graphType, "UTF-8")));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device port graph - response code is " + r.getStatusCode());
+        } else {
+            BufferedInputStream bis = new BufferedInputStream(r.getResponseBodyAsStream());
+            return ByteStreams.toByteArray(bis);
         }
      }
      
@@ -195,7 +277,7 @@ public class LibreAPI implements Closeable {
         return request;
     }
     
-        private Request buildRequest(String type, String subUrl, String requestBody) {
+    private Request buildRequest(String type, String subUrl, String requestBody) {
         RequestBuilder builder = new RequestBuilder(type);
         Request request = builder.setUrl(this.url + subUrl)
                 .addHeader("Accept", JSON)
