@@ -32,6 +32,9 @@ public class  Version {
 
    
 /*
+    0.3.4 - Added ability to filter getDevice so we can hide SNMP communities on some responses.
+    0.3.3 - Added CPU and wireless graphs
+    0.3.2 - Fixed bug where error was generated creating device - code was checking for a 200 and libre returns a 201
     0.3.1 - Added ability to list generic graphs for a device
     0.3.0 - Added ability to get IP info from ports
 
@@ -40,7 +43,7 @@ public class  Version {
 
         }
 
-        private final String buildNumber = "0.3.1";
+        private final String buildNumber = "0.3.3";
         private final String buildName = "Keep The Car Running";
         private final String author = "Matthew M. Gamble";
 

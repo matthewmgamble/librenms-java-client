@@ -125,7 +125,7 @@ public class LibreAPI implements Closeable {
         }
     }
     
-    public Device getDevice(String deviceID) throws Exception {
+    public Device getDevice(String deviceID, boolean filtered) throws Exception {
         if (deviceID == null) {
             throw new Exception("Cannot load a null device - check device ID");
         }
@@ -139,6 +139,10 @@ public class LibreAPI implements Closeable {
             if (devices.getDevices().size() != 1) {
                 throw new Exception("Too many or too few results found for query");
             } else {
+                if (filtered) {
+                    devices.getDevices().get(0).setCommunity("**********");
+                    devices.getDevices().get(0).setDeviceID("0");
+                }
                 return devices.getDevices().get(0);
             }
             
@@ -149,7 +153,7 @@ public class LibreAPI implements Closeable {
     
        Future<Response> f = client.executeRequest(buildRequest("POST", "/devices", gson.toJson(newDevice)));
         Response r = f.get();
-        if (r.getStatusCode() != 200) {
+        if ((r.getStatusCode() != 200) || (r.getStatusCode() != 201)  ){
             
             throw new Exception("Could not create new device - HTTP Response Code was: " + r.getStatusCode() );
         } else {
@@ -230,7 +234,29 @@ public class LibreAPI implements Closeable {
             
         }
      }
+     public byte[] getDeviceCPUGraph(String deviceID) throws Exception {
+         //https://librenms-master.egate.net/api/v0/devices/438/graphs/health/device_processor
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/graphs/health/device_processor"));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device port graph - response code is " + r.getStatusCode());
+        } else {
+            BufferedInputStream bis = new BufferedInputStream(r.getResponseBodyAsStream());
+            return ByteStreams.toByteArray(bis);
+        }
+     }
      
+     public byte[] getWirelessClientGraph(String deviceID) throws Exception {
+         //https://librenms-master.egate.net/api/v0/devices/1207/graphs/wireless/device_wireless_clients
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/graphs/wireless/device_wireless_clients"));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device port graph - response code is " + r.getStatusCode());
+        } else {
+            BufferedInputStream bis = new BufferedInputStream(r.getResponseBodyAsStream());
+            return ByteStreams.toByteArray(bis);
+        }
+     }
      public byte[] getGenericDeviceGraph(String deviceID, String graphType) throws Exception {
         Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/" + URLEncoder.encode(graphType, "UTF-8")));
         Response r = f.get();
