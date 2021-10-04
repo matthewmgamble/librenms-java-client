@@ -125,6 +125,15 @@ public class LibreAPI implements Closeable {
         }
     }
     
+    public void deleteDevice(String deviceID) throws Exception {
+        if (deviceID == null) {
+            throw new Exception("Cannot delete a null device - check device ID");
+        }
+       Future<Response> f = client.executeRequest(buildRequest("DELETE", "/devices/" + URLEncoder.encode(deviceID, "UTF-8")));
+        Response r = f.get();
+        
+    }
+    
     public Device getDevice(String deviceID, boolean filtered) throws Exception {
         if (deviceID == null) {
             throw new Exception("Cannot load a null device - check device ID");
@@ -272,6 +281,16 @@ public class LibreAPI implements Closeable {
      
      public byte[] getDevicePortGraph(String deviceID, String ifaceName) throws Exception {
         Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/ports/" + URLEncoder.encode(ifaceName, "UTF-8") + "/port_bits"));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device port graph - response code is " + r.getStatusCode());
+        } else {
+            BufferedInputStream bis = new BufferedInputStream(r.getResponseBodyAsStream());
+            return ByteStreams.toByteArray(bis);
+        }
+     }
+     public byte[] getDevicePortGraphByRange(String deviceID, String ifaceName, String from, String to) throws Exception {
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/ports/" + URLEncoder.encode(ifaceName, "UTF-8") + "/port_bits?from=" + from + "&to=" + to));
         Response r = f.get();
         if (r.getStatusCode() != 200) {
             throw new Exception("Could not get device port graph - response code is " + r.getStatusCode());
