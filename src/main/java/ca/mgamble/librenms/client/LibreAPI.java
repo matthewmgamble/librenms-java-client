@@ -162,7 +162,7 @@ public class LibreAPI implements Closeable {
     
        Future<Response> f = client.executeRequest(buildRequest("POST", "/devices", gson.toJson(newDevice)));
         Response r = f.get();
-        if ((r.getStatusCode() != 200) || (r.getStatusCode() != 201)  ){
+        if (r.getStatusCode() != 200) {
             
             throw new Exception("Could not create new device - HTTP Response Code was: " + r.getStatusCode() );
         } else {
@@ -188,7 +188,7 @@ public class LibreAPI implements Closeable {
     // devices/:device/ports - get the device ports
      
      public Ports getDevicePorts(String deviceID) throws Exception {
-        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/ports?columns=ifName%2Cport_id%2CifOperStatus%2CifDescr"));
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/ports?columns=ifName%2Cport_id%2CifOperStatus%2CifDescr%2CifAdminStatus%2CifAlias"));
         Response r = f.get();
         if (r.getStatusCode() != 200) {
             throw new Exception("Could not get device ports - response code is " + r.getStatusCode());
@@ -294,6 +294,39 @@ public class LibreAPI implements Closeable {
         Response r = f.get();
         if (r.getStatusCode() != 200) {
             throw new Exception("Could not get device port graph - response code is " + r.getStatusCode());
+        } else {
+            BufferedInputStream bis = new BufferedInputStream(r.getResponseBodyAsStream());
+            return ByteStreams.toByteArray(bis);
+        }
+     }
+     //https://librenms-master.egate.net/api/v0/devices/3534/graphs/wireless/device_wireless_rsrp
+     public byte[] getDeviceWirelessRSRPGraph(String deviceID,  String from, String to) throws Exception {
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/graphs/wireless/device_wireless_rsrp?from=" + from + "&to=" + to));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device LTE RSRP graph - response code is " + r.getStatusCode());
+        } else {
+            BufferedInputStream bis = new BufferedInputStream(r.getResponseBodyAsStream());
+            return ByteStreams.toByteArray(bis);
+        }
+     }
+     
+     public byte[] getDeviceWirelessRSRQGraph(String deviceID,  String from, String to) throws Exception {
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/graphs/wireless/device_wireless_rsrq?from=" + from + "&to=" + to));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device LTE RSRQ graph - response code is " + r.getStatusCode());
+        } else {
+            BufferedInputStream bis = new BufferedInputStream(r.getResponseBodyAsStream());
+            return ByteStreams.toByteArray(bis);
+        }
+     }
+     
+     public byte[] getDeviceWirelessSINRGraph(String deviceID,  String from, String to) throws Exception {
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/graphs/wireless/device_wireless_sinr?from=" + from + "&to=" + to));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device LTE SNIR graph - response code is " + r.getStatusCode());
         } else {
             BufferedInputStream bis = new BufferedInputStream(r.getResponseBodyAsStream());
             return ByteStreams.toByteArray(bis);

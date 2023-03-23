@@ -3,39 +3,45 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ca.mgamble</groupId>
     <artifactId>librenms-java-client</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.4.0</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
     <dependencies>
-                <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+  <dependency>
+            <groupId>ch.qos.reload4j</groupId>
+            <artifactId>reload4j</artifactId>
+            <version>1.2.24</version>
             <type>jar</type>
         </dependency>
-            <dependency>
+        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.8.5</version>
-        </dependency>
-         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>27.1-jre</version>
+            <version>2.10.1</version>
+                <scope>provided</scope>
+            <optional>true</optional> <!-- value will be true or false only -->
         </dependency>
         <dependency>
-    <groupId>org.asynchttpclient</groupId>
-    <artifactId>async-http-client</artifactId>
-    <version>2.4.9</version>
-    <type>jar</type>
-</dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+            <scope>provided</scope>
+            <optional>true</optional> <!-- value will be true or false only -->
+        </dependency>
+        <dependency>
+            <groupId>org.asynchttpclient</groupId>
+            <artifactId>async-http-client</artifactId>
+            <version>2.12.3</version>
+            <type>jar</type>
+            <scope>provided</scope>
+            <optional>true</optional> <!-- value will be true or false only -->
+        </dependency>
 
     </dependencies>
-     <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -43,8 +49,8 @@
                 <version>3.1</version>
                 <!-- compile for Java 1.8 -->
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -94,5 +100,14 @@
 
         </plugins>
     </build>
-
+        <distributionManagement>
+            <snapshotRepository>
+                <id>nexus-snapshots</id>
+                <url>http://172.16.1.35:8081/repository/maven-snapshots/</url>
+            </snapshotRepository>
+            <repository>
+                <id>nexus-releases</id>
+                <url>http://172.16.1.35:8081/repository/maven-releases/</url>
+            </repository>
+        </distributionManagement>
 </project>

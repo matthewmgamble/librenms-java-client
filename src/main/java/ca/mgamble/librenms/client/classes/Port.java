@@ -28,10 +28,14 @@ package ca.mgamble.librenms.client.classes;
  * @author mgamble
  */
 public class Port {
+
+
     private String ifName;
     private String port_id;
     private String ifOperStatus;
     private String ifDescr;
+    private String ifAdminStatus;
+    private String ifAlias;
     /**
      * @return the ifName
      */
@@ -86,5 +90,33 @@ public class Port {
      */
     public void setIfDescr(String ifDescr) {
         this.ifDescr = ifDescr;
+    }
+    
+        /**
+     * @return the ifAdminStatus
+     */
+    public String getIfAdminStatus() {
+        return ifAdminStatus;
+    }
+
+    /**
+     * @param ifAdminStatus the ifAdminStatus to set
+     */
+    public void setIfAdminStatus(String ifAdminStatus) {
+        this.ifAdminStatus = ifAdminStatus;
+    }
+
+    /**
+     * @return the ifAlias
+     */
+    public String getIfAlias() {
+        return ifAlias;
+    }
+
+    /**
+     * @param ifAlias the ifAlias to set
+     */
+    public void setIfAlias(String ifAlias) {
+        this.ifAlias = ifAlias;
     }
 }
