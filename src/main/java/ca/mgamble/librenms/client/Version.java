@@ -32,6 +32,7 @@ public class  Version {
 
    
 /*
+    0.4.1 - Added additional LTE graph for SNR vs SNIR
     0.4.0 - Added methods to pull LTE graphs for Mirotik devices
     0.3.9 - Added two new fields when returning ports - ifAdminStatus and ifAlias to aid in dashboard display
     0.3.8 - Change create logic a bit
@@ -49,7 +50,7 @@ public class  Version {
 
         }
 
-        private final String buildNumber = "0.4.0";
+        private final String buildNumber = "0.4.1";
         private final String buildName = "Keep The Car Running";
         private final String author = "Matthew M. Gamble";
 

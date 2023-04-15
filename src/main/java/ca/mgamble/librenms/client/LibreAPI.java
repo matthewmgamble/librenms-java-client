@@ -333,6 +333,16 @@ public class LibreAPI implements Closeable {
         }
      }
      
+     public byte[] getDeviceWirelessSNRGraph(String deviceID,  String from, String to) throws Exception {
+        Future<Response> f = client.executeRequest(buildRequest("GET", "/devices/" + URLEncoder.encode(deviceID, "UTF-8") + "/graphs/wireless/device_wireless_snr?from=" + from + "&to=" + to));
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            throw new Exception("Could not get device LTE SNIR graph - response code is " + r.getStatusCode());
+        } else {
+            BufferedInputStream bis = new BufferedInputStream(r.getResponseBodyAsStream());
+            return ByteStreams.toByteArray(bis);
+        }
+     }
     // Event Logs
     public EventLogs getDeviceEventLogs(String deviceID) throws Exception {
         Future<Response> f = client.executeRequest(buildRequest("GET", "/logs/eventlog/" + URLEncoder.encode(deviceID, "UTF-8")));
