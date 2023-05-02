@@ -21,30 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ca.mgamble.librenms.client.classes;
+package ca.mgamble.librenms.classes;
 
 /**
  *
  * @author mgamble
  */
 public class LibreOperationResponse {
-    private String status;
+    private boolean success;
+    private String operationData;
     private String message;
 
-    /**
-     * @return the status
-     */
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
+   
     /**
      * @return the message
      */
@@ -57,6 +45,34 @@ public class LibreOperationResponse {
      */
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    /**
+     * @return the success
+     */
+    public boolean isSuccess() {
+        return success;
+    }
+
+    /**
+     * @param success the success to set
+     */
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    /**
+     * @return the operationData
+     */
+    public String getOperationData() {
+        return operationData;
+    }
+
+    /**
+     * @param operationData the operationData to set
+     */
+    public void setOperationData(String operationData) {
+        this.operationData = operationData;
     }
     
 }

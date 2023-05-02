@@ -1,5 +1,4 @@
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/EventLogs.java
-/Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/LibreOperationResponse.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/LibreAPI.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/IPInfo.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/Device.java
@@ -12,6 +11,8 @@
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/EventType.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/Port.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/Graphs.java
+/Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/classes/LibreOperationResponse.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/DevicePortResponse.java
+/Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/WirelessSensorType.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/Version.java
 /Users/mgamble/git/librenms-java-client/src/main/java/ca/mgamble/librenms/client/classes/NewLibreDevice.java

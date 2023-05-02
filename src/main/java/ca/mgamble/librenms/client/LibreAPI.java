@@ -25,10 +25,12 @@ import ca.mgamble.librenms.client.classes.Devices;
 import ca.mgamble.librenms.client.classes.EventLogs;
 import ca.mgamble.librenms.client.classes.Graphs;
 import ca.mgamble.librenms.client.classes.IPInfo;
-import ca.mgamble.librenms.client.classes.LibreOperationResponse;
+import ca.mgamble.librenms.classes.LibreOperationResponse;
 import ca.mgamble.librenms.client.classes.NewLibreDevice;
+
 import ca.mgamble.librenms.client.classes.PortDetail;
 import ca.mgamble.librenms.client.classes.Ports;
+import ca.mgamble.librenms.client.classes.WirelessSensorType;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import java.io.BufferedInputStream;
@@ -55,6 +57,8 @@ public class LibreAPI implements Closeable {
     private final boolean closeClient;
     private final AsyncHttpClient client;
     private final String url;
+    private final String customAPIUrl;
+    private boolean customAPISupport = false;
     private final String token;
     private final Logger logger;
     private boolean closed = false;
@@ -69,6 +73,8 @@ public class LibreAPI implements Closeable {
         this.logger = Logger.getLogger(LibreAPI.class);
         this.url = url;
         this.token = token;
+        this.customAPISupport = false;
+        this.customAPIUrl = "https://invalid.tld";
         this.client = new DefaultAsyncHttpClient();
         
         RequestBuilder builder = new RequestBuilder("GET");
@@ -88,6 +94,37 @@ public class LibreAPI implements Closeable {
         } 
         closeClient = true;
     
+    }
+
+    public LibreAPI(String url, String customAPIURL, String token) throws Exception {
+        this.logger = Logger.getLogger(LibreAPI.class);
+        this.url = url;
+        this.customAPIUrl = customAPIURL;
+        this.token = token;
+        this.customAPISupport = true;
+        this.client = new DefaultAsyncHttpClient();
+        
+        RequestBuilder builder = new RequestBuilder("GET");
+        Request request = builder.setUrl(this.url)
+                .addHeader("Accept", JSON)
+                .addHeader("Content-Type", JSON)
+                .addHeader("X-Auth-Token", token)
+                .build();
+        Future<Response> f = client.executeRequest(request);
+        Response r = f.get();
+        if (r.getStatusCode() != 200) {
+            if (r.getStatusCode() == 401) {
+                throw new Exception("API Client Unauthorized");
+            } else {
+                throw new Exception("Could not connect / login to LibreAPI - http status " + r.getStatusCode());
+            }
+        } 
+        closeClient = true;
+    
+    }
+    
+    public boolean isCustomAPIEnabled() {
+        return customAPISupport;
     }
     
     //////////////////////////////////////////////////////////////////////
@@ -355,6 +392,30 @@ public class LibreAPI implements Closeable {
         }
     }
 
+    // Start custom API endpoints that require the deployment of a seperate API server on the LibreNMS server to support these queries
+    
+    public LibreOperationResponse getWirelessSensorData(String deviceID, WirelessSensorType sensorType) {
+        LibreOperationResponse opResult = new LibreOperationResponse();
+        if (!customAPISupport) {
+            opResult.setSuccess(false);
+            opResult.setMessage("LibreNMS Server does not support this operation");
+        } else {
+            try {
+                Future<Response> f = client.executeRequest(buildCustomRequest("GET", "/query/wireless/" + URLEncoder.encode(deviceID, "UTF-8") + "/" + URLEncoder.encode(sensorType.toString(), "UTF-8")));
+                Response r = f.get();
+                if (r.getStatusCode() != 200) {
+                    throw new Exception("Could not get wireless sensor data - response code is " + r.getStatusCode());
+                } else {
+                    opResult = gson.fromJson(r.getResponseBody(), LibreOperationResponse.class);
+                }
+            } catch (Exception ex) {
+                opResult.setSuccess(false);
+                opResult.setMessage("Error getting sensor data: " + ex);
+            }
+        }
+
+        return opResult;
+    }
     private Request buildRequest(String type, String subUrl) {
         RequestBuilder builder = new RequestBuilder(type);
         Request request = builder.setUrl(this.url + subUrl)
@@ -375,4 +436,26 @@ public class LibreAPI implements Closeable {
                 .build();
         return request;
     }
+    
+    private Request buildCustomRequest(String type, String subUrl) {
+        RequestBuilder builder = new RequestBuilder(type);
+        Request request = builder.setUrl(this.customAPIUrl + subUrl)
+                .addHeader("Accept", JSON)
+                .addHeader("Content-Type", JSON)
+                .addHeader("X-Auth-Token",  this.token)
+                .build();
+        return request;
+    }
+    
+    private Request buildCustomRequest(String type, String subUrl, String requestBody) {
+        RequestBuilder builder = new RequestBuilder(type);
+        Request request = builder.setUrl(this.customAPIUrl + subUrl)
+                .addHeader("Accept", JSON)
+                .addHeader("Content-Type", JSON)
+                .addHeader("X-Auth-Token",  this.token)
+                .setBody(requestBody)
+                .build();
+        return request;
+    }
+    
 }

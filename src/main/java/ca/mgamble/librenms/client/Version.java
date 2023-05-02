@@ -32,6 +32,8 @@ public class  Version {
 
    
 /*
+    0.5.1 - Change EGN OperationResult to LibreOperationResponse to make it more generic, remove dependancy on whole EGN common objects package
+    0.5.0 - Adding support for calls to custom internal LibreNMS server which augments the stock libreapi with additonal useful API calls not supported by the "v0" API currently
     0.4.1 - Added additional LTE graph for SNR vs SNIR
     0.4.0 - Added methods to pull LTE graphs for Mirotik devices
     0.3.9 - Added two new fields when returning ports - ifAdminStatus and ifAlias to aid in dashboard display
@@ -50,7 +52,7 @@ public class  Version {
 
         }
 
-        private final String buildNumber = "0.4.1";
+        private final String buildNumber = "0.5.1";
         private final String buildName = "Keep The Car Running";
         private final String author = "Matthew M. Gamble";
 
