@@ -32,6 +32,8 @@ public class  Version {
 
    
 /*
+    0.5.3 - Fix CPU graph date ranges
+    0.5.2 - Add date ranges to generic graphs (used for firewall CPU)
     0.5.1 - Change EGN OperationResult to LibreOperationResponse to make it more generic, remove dependancy on whole EGN common objects package
     0.5.0 - Adding support for calls to custom internal LibreNMS server which augments the stock libreapi with additonal useful API calls not supported by the "v0" API currently
     0.4.1 - Added additional LTE graph for SNR vs SNIR
@@ -52,7 +54,7 @@ public class  Version {
 
         }
 
-        private final String buildNumber = "0.5.1";
+        private final String buildNumber = "0.5.3";
         private final String buildName = "Keep The Car Running";
         private final String author = "Matthew M. Gamble";
 
